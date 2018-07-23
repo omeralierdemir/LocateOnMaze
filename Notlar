@@ -22,19 +22,25 @@ print("gereksiz : " ,gereksiz)
 
 
 
-halledilme durumu ------> -
+halledilme durumu ------> +
 
 
 
 
 
-yuvarlamadan dolayı belki piksel boyutu aşabilir yazdığın kod ondan dolayı aşağıya yuvarla  (import math , math.floar() )  ---------> -
+yuvarlamadan dolayı belki piksel boyutu aşabilir yazdığın kod ondan dolayı aşağıya yuvarla  (import math , math.floar() )  ---------> -  buna gerek kalmayabilir
+dizi mantığındaki indis mantığı ile ilerliyor şuanlık döngü. Eğer herhangi dizi boyutunu aşma durumu olursa bil ki buradan kaynaklı bir sorun vardır.
 
 
 
 usta sen en çok tekrar edende y,x kordinatlarının tekrarı olarak düşünmüşsün bu imkansız bi olay, istediğin tekrar durumun bul onu dönder ( yani y,veya x den biri) ondan sonra
 tekrar sayısını bul eğer 1 den fazla tekrar yoksa ortalama hesabına git. ortalma hesabında yanlış büyük ihtimalle onada dikkat et. 0-0 durumlarını silecek koduda eklemelisin
 
+------> +
+
+
+
+yamuk ---> paralel kenar durumları için tekrar kodu gözden geçir ---> ortalama veya başka bir durum düşün
 
 
 --------------------------------------------------------------------------

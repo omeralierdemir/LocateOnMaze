@@ -89,7 +89,7 @@ def findBeam(startPoint,direction,imgEdge):  # [y,x] şeklinde olmalı
 
 def koordinatTespit(loopNum1,loopNum2):
 
-
+    count = 0
     img = cv2.imread("ilk.png",0)
     edgeImg = edgeDetection(img)
     kopru = []
@@ -105,10 +105,12 @@ def koordinatTespit(loopNum1,loopNum2):
 
 
 
-    dizi1 = diziOlustur([0,0],loopNum1,pikselFark1,0,edgeImg)
-    dizi2 = diziOlustur([y-1,0],loopNum2,pikselFark2,3,edgeImg)
-    dizi3 = diziOlustur([0,x-1],loopNum1,pikselFark1,2,edgeImg)
-    dizi4 = diziOlustur([0,0],loopNum2,pikselFark2,1,edgeImg)
+
+
+    dizi1 = filtre(diziOlustur([0,0],loopNum1,pikselFark1,0,edgeImg))
+    dizi2 = filtre(diziOlustur([y-1,0],loopNum2,pikselFark2,3,edgeImg))
+    dizi3 = filtre(diziOlustur([0,x-1],loopNum1,pikselFark1,2,edgeImg))
+    dizi4 = filtre(diziOlustur([0,0],loopNum2,pikselFark2,1,edgeImg))
 
 
 
@@ -117,9 +119,12 @@ def koordinatTespit(loopNum1,loopNum2):
     for i in topDizi:
 
 
-        kopru,point = tekrarSayisiBulma(i)
 
-        if(point > 1):
+        kopru,point = tekrarSayisiBulma(i,count)
+
+        count = count + 1                                 # usta burada eğer count çift ise dizinin 1. elemanlarının kontrolune bakıyor tek ise 2. elemanlarına
+                                                        # Bunun sebebi her labirent duvarda farklı eksenler sabit olarak kalıyor. Dinamik bir çözüm değil
+        if(point > 1):                                  # ilerleyen süreçlerde değiştirmeye çalış
 
             sonuc.append(kopru)
         else:
@@ -180,6 +185,93 @@ def diziOlustur(startPoint,loopNum,pikselFark,direction,edgeImg):
 
 
 
+def filtre(filtreDizi):
+
+
+    count = filtreDizi.count([0, 0])
+
+    for i in range(count):
+        filtreDizi.remove([0, 0])
+
+
+
+    return filtreDizi
+
+
+
+
+def tekrarSayisiBulma(korNoktalari,mod):  # en çok tekrar eden kordinatı bulup, o koordinatı döndürür ----> [tekrarSayısı,[x,y]]
+
+
+    dizi = []
+    if(mod % 2 == 0):
+
+
+        kopru = [x[1] for x in korNoktalari]
+
+
+    else:
+
+        kopru = [x[0] for x in korNoktalari]
+
+
+
+
+
+    for i in korNoktalari:
+
+        if(mod % 2 == 0):
+
+            dizi.append([kopru.count(i[1]), i])
+
+        else:
+
+
+            dizi.append([kopru.count(i[0]), i])
+
+
+
+
+
+
+
+
+
+    dizi.sort()
+
+    tekrarSa = dizi[-1][0]
+
+    return dizi[-1][1],tekrarSa
+
+
+
+
+def ortalamaKoordinatNoktasi(korNoktalari,mod): # belirli sayıda tekrar etmeyen koordinat noktalrının ortalamasını alarak ortalama bir koordinat noktası döndürür.
+
+
+    dizi = []
+    top, top1, top2 = 0, 0 ,0
+
+    for i in korNoktalari:
+
+        if(mod % 2 == 0):
+
+
+            top = top + i[1]
+
+
+        else:
+            top = top + i[0]
+
+    ort1 = top / len(korNoktalari)
+
+    return dizi.append([ort1, ort2])
+
+
+
+
+
+
 
 
 
@@ -198,61 +290,8 @@ def edgeDetection(img):
 
 
 
-
-
-def tekrarSayisiBulma(korNoktalari):  # en çok tekrar eden kordinatı bulup, o koordinatı döndürür ----> [tekrarSayısı,[x,y]]
-
-
-
-    dizi = []
-
-    for i in korNoktalari:
-        dizi.append([korNoktalari.count(i), i])
-
-
-    dizi.sort()
-
-    tekrarSa = dizi[0]
-
-    return dizi[1][-1],tekrarSa
-
-
-
-
-def ortalamaKoordinatNoktasi(korNoktalari): # belirli sayıda tekrar etmeyen koordinat noktalrının ortalamasını alarak ortalama bir koordinat noktası döndürür.
-
-
-    toplamDeg = []
-    top1, top2 = 0, 0
-
-    for i in korNoktalari:
-        top1 = top1 + i[0]
-        top2 = top2 + i[1]
-
-
-
-    ort1 = top1/len(korNoktalari)
-    ort2 = top1/len(korNoktalari)
-
-    return toplamDeg.append([ort1, ort2])
-
-
-
-
-
-
-def filtre(dizi):
-
-
-    for i in dizi:
-
-
-        if(i == [0,0]):
-
-            dizi.remove([0,0])
-
-
 koordinatTespit(20,40)
+
 
 
 

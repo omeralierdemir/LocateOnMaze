@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="23a93902-ee92-441d-b3e0-71792cf97a6d" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FindCorner.py" beforeDir="false" afterPath="$PROJECT_DIR$/FindCorner.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Notlar" beforeDir="false" afterPath="$PROJECT_DIR$/Notlar" afterDir="false" />
     </list>
@@ -18,8 +17,8 @@
       <file leaf-file-name="FindCorner.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/FindCorner.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1603">
-              <caret line="202" column="4" selection-start-line="202" selection-start-column="4" selection-end-line="202" selection-end-column="4" />
+            <state relative-caret-position="311">
+              <caret line="299" lean-forward="true" selection-start-line="299" selection-end-line="299" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -27,20 +26,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="codecs.py" pinned="false" current-in-tab="false">
-        <entry file="file:///usr/lib/python3.6/codecs.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="158">
-              <caret line="266" selection-start-line="266" selection-end-line="266" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Notlar" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Notlar">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="447">
-              <caret line="36" lean-forward="true" selection-start-line="36" selection-end-line="36" />
+            <state relative-caret-position="528">
+              <caret line="39" column="105" selection-start-line="39" selection-start-column="105" selection-end-line="39" selection-end-column="105" />
             </state>
           </provider>
         </entry>
@@ -66,8 +56,8 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/BirimTest.py" />
-        <option value="$PROJECT_DIR$/FindCorner.py" />
         <option value="$PROJECT_DIR$/Notlar" />
+        <option value="$PROJECT_DIR$/FindCorner.py" />
       </list>
     </option>
   </component>
@@ -244,8 +234,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/FindCorner.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1603">
-          <caret line="202" column="4" selection-start-line="202" selection-start-column="4" selection-end-line="202" selection-end-column="4" />
+        <state relative-caret-position="311">
+          <caret line="299" lean-forward="true" selection-start-line="299" selection-end-line="299" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
@@ -254,8 +244,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Notlar">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="447">
-          <caret line="36" lean-forward="true" selection-start-line="36" selection-end-line="36" />
+        <state relative-caret-position="528">
+          <caret line="39" column="105" selection-start-line="39" selection-start-column="105" selection-end-line="39" selection-end-column="105" />
         </state>
       </provider>
     </entry>
