@@ -1,7 +1,7 @@
 reis bu 0-0 ekleniyor duvara gelemediği durumlarda 0-0 eklemesi yapıyor bunu çözmen lazım kodu ekledim burayada yapıştıryorum editlemen lazım  ----> 20 temmuz 2018
 
 
-ereksiz = [1,1,2,3,4,5,6,7,8,8,8,8,8,8]
+gereksiz = [1,1,2,3,4,5,6,7,8,8,8,8,8,8]
 
 kadar = gereksiz[:]
 
@@ -19,7 +19,21 @@ print("gereksiz : " ,gereksiz)
 
 
 
+
+
+
 halledilme durumu ------> -
+
+
+
+
+
+yuvarlamadan dolayı belki piksel boyutu aşabilir yazdığın kod ondan dolayı aşağıya yuvarla  (import math , math.floar() )  ---------> -
+
+
+
+usta sen en çok tekrar edende y,x kordinatlarının tekrarı olarak düşünmüşsün bu imkansız bi olay, istediğin tekrar durumun bul onu dönder ( yani y,veya x den biri) ondan sonra
+tekrar sayısını bul eğer 1 den fazla tekrar yoksa ortalama hesabına git. ortalma hesabında yanlış büyük ihtimalle onada dikkat et. 0-0 durumlarını silecek koduda eklemelisin
 
 
 

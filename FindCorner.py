@@ -15,22 +15,47 @@ def findBeam(startPoint,direction,imgEdge):  # [y,x] şeklinde olmalı
 
     while state:
 
-        if(imgEdge[i][j] == 225):
+        kopru = imgEdge[i][j]
+
+
+
+
+
+        if( kopru == 255):
 
             state = False
-
         else:
 
             if(direction == 0):  #  ------> 0 == 0
+
+                if ( x - 1 ==  j):
+                    i, j = 0, 0
+
+                    break
 
                 i, j = i, j + 1
 
             elif(direction == 1): # -----> 1 == 2
 
+
+
+                if ( y - 1 ==  i):
+
+
+                    i, j = 0, 0
+
+                    break
+
                 i,j = i + 1, j
 
 
             elif(direction == 2):  # ------> 2 == 4
+
+                if ( j == 0):
+
+                    i, j = 0, 0
+
+                    break
 
 
                 i,j = i , j - 1
@@ -38,16 +63,19 @@ def findBeam(startPoint,direction,imgEdge):  # [y,x] şeklinde olmalı
 
             elif(direction == 3):  # ------> 3 == 6
 
+                if (i == 0):
+
+                    i, j = 0, 0
+
+                    break
+
+
 
                 i,j = i - 1 , j
 
 
 
-            if(y-1,x-1 == i,j):
 
-                i,j = 0,0
-
-                break
 
 
     return [i,j]
