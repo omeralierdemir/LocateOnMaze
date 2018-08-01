@@ -143,7 +143,7 @@ def koordinatTespit(loopNum1,loopNum2):
 
     print(p1,p2,p3,p4)
 
-
+    return  p1,p2,p3,p4
 
 
 
