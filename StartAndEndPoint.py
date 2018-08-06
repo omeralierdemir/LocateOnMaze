@@ -303,10 +303,13 @@ def detectPoint(img):
 
 
 
-detectPoint()
+img = cv2.imread("son.png")
+detectPoint(img)
 
 cv2.imshow("omer",img)
 cv2.waitKey(0)
+
+
 
 
 

@@ -90,7 +90,7 @@ def findBeam(startPoint,direction,imgEdge):  # [y,x] şeklinde olmalı
 def koordinatTespit(loopNum1,loopNum2):
 
     count = 0
-    img = cv2.imread("ilk.png",0)
+    img = cv2.imread("son.png",0)
     edgeImg = edgeDetection(img)
     kopru = []
     y,x = edgeImg.shape
@@ -142,6 +142,21 @@ def koordinatTespit(loopNum1,loopNum2):
     p4 = [sonuc[3][0], sonuc[0][1]]
 
     print(p1,p2,p3,p4)
+
+    liste = []
+    liste = [p1,p2,p3,p4]
+
+    img2 = cv2.imread("son.png",1)
+
+
+    img2[p1[0]][p1[1]] = [0, 0, 255]
+    img2[p2[0]][p2[1]] = [0, 0, 255]
+    img2[p3[0]][p3[1]] = [0, 0, 255]
+    img2[p4[0]][p4[1]] = [0, 0, 255]
+
+
+    cv2.imshow("omer",img2)
+    cv2.waitKey(0)
 
     return  p1,p2,p3,p4
 
