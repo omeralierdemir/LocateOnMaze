@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
 
+import math
+
 import FindCorner as fc
 
 
@@ -11,7 +13,7 @@ def komsuluk(y,x,backPath,green,img):  # unutma i == y ekseni  j == x ekseni
 
 
 
-    dizi= [[0,0],[0,0]]  # burada hata olabilir...  burada en son 3 eleman eklemede sıkıntı çıkarıyor ondan böyle 2 tane 0-0 dizisi atadın  ----> Hacı burada boş küme ile başlattım. return evresinden önce o elemanı silmelisin
+    dizi= []  # burada hata olabilir...  burada en son 3 eleman eklemede sıkıntı çıkarıyor ondan böyle 2 tane 0-0 dizisi atadın  ----> Hacı burada boş küme ile başlattım. return evresinden önce o elemanı silmelisin
     deg = 0
     dogruYol = 0
 
@@ -66,6 +68,9 @@ def komsuluk(y,x,backPath,green,img):  # unutma i == y ekseni  j == x ekseni
 
             dugum = dugumNoktalari(i, j, yon)
 
+            for k in range(len(dugum)):
+                dugum[k] = dugum[k] + [dizi]
+
 
 
 
@@ -90,11 +95,11 @@ def komsuluk(y,x,backPath,green,img):  # unutma i == y ekseni  j == x ekseni
             interim = dugumNoktalari(i, j, yon)  #x,ydi değiştirdim i,j ile hata yapmış olabilirim...
 
             i,j = interim[0][0],interim[0][1] # sebebi dizi içinde dizi döndermesidir.
+            backPath.append([i,j])
 
 
-
-    geriDonus = backPath[-1]
-    return dugum
+    geriDonus = dizi[-1]
+    return dugum, geriDonus
 
 
 
@@ -156,7 +161,8 @@ def rangeDetection(y,x,green):
     p1,p2,p3,p4 = fc.koordinatTespit(20,40)         #buradaki amaç baslangıç noktasına en yakın olan cornerPointleri tespit ederek o noktaya göre thining son bitini kıyaslayarak thining yönünü belirleme
     liste = []
     cornerPoint = [p1,p2,p3,p4]
-    cerceveNoktasi = green[0] / 2 # green çerçevesinin en orta noktası baz alınarak işlem yapılmaya çalışılmıştır
+    cerceveNoktasi = [math.ceil(green[0][0] / 2) , math.ceil(green[0][1] / 2)] # green çerçevesinin en orta noktası baz alınarak işlem yapılmaya çalışılmıştır
+
     count = 0
     state = 0
 
@@ -214,7 +220,7 @@ def rangeDetection(y,x,green):
 
 def findThinPath():
 
-    backPath = [[0,0]]
+    backPath = []
     araBackPath = []
     araDugum = []
     state2 = False
@@ -235,17 +241,28 @@ def findThinPath():
             if(thn[i][j] == 255):
 
                 dugumler = [[i,j]]
+                backPath = [[[i,j]]]
                 for k in range(2):
 
                     for l in dugumler:
 
 
 
-                        ara = komsuluk(l[0],l[1],backPath,green,thn)
-                        araDugum.append(ara)
+                        ara,back = komsuluk(l[0],l[1],[backPath],green,thn)
+                        araDugum.extend(ara)
+
+
+                    for a in araDugum:
+
+                        backPath.append([a[0],a[1]])
+
+
+                    backPath.extend(back)
+
 
                     dugumler = araDugum[:]
-                    backPath = araDugum[:]
+
+
                     araDugum = []
 
 
@@ -326,6 +343,7 @@ def detectPoint(img):
 
 img1 = cv2.imread("son.png")
 findThinPath()
+#detectPoint(img1)
 cv2.imshow("omer",img1)
 cv2.waitKey(0)
 

@@ -305,7 +305,6 @@ def edgeDetection(img):
 
 
 
-koordinatTespit(20,40)
 
 
 

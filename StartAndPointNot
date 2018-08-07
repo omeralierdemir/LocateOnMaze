@@ -9,3 +9,5 @@ yapılacak while(len(dugum)>0) olduğu sürece döngü dönecek veya doğru yön
 Başlangıç noktasının labirentin içinde mi yoksa labirenetin dışında mı olduğunu öğrenmemiz gerekmektedir. -------------> -
 
 Labirent yamuk olursa ortalama hesabı yapınca dugum noktaları bulunan korner noktalarının içinde olmasada içinde gözükme ihtimali var ----------> -
+
+backPath eklemede sıkıntı var gittiği yolun backPath e eklemelisin. Tamamını gözden geçir backPath muhabbetinin
