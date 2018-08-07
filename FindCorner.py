@@ -155,8 +155,8 @@ def koordinatTespit(loopNum1,loopNum2):
     img2[p4[0]][p4[1]] = [0, 0, 255]
 
 
-    cv2.imshow("omer",img2)
-    cv2.waitKey(0)
+  #  cv2.imshow("omer",img2)
+   # cv2.waitKey(0)
 
     return  p1,p2,p3,p4
 

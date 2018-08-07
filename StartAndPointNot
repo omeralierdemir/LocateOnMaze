@@ -3,3 +3,9 @@
 çerceve taranacak; kesinlikle tarama işlemi sırasında break deyimi kullanılmayacak. thiining ilk bulunduğunda komşuluk tespiti yapılacak ( komşuluk fonksiyonunu
 çağırman yeterli olur) yön değeri sıfır olduğu noktada rangeDetect fonksiyo ile thining dğru yönden mi kontrolü yapılacak. thiniing işlereken bir düğüm çıkarsa düğüm return
 yapılacak while(len(dugum)>0) olduğu sürece döngü dönecek veya doğru yön ve path bulununca backPoint ve startPoint kullanıcıya geri döndürülecek.
+
+------------------------------------------------------------------------ 7 Agustos 2018
+
+Başlangıç noktasının labirentin içinde mi yoksa labirenetin dışında mı olduğunu öğrenmemiz gerekmektedir. -------------> -
+
+Labirent yamuk olursa ortalama hesabı yapınca dugum noktaları bulunan korner noktalarının içinde olmasada içinde gözükme ihtimali var ----------> -

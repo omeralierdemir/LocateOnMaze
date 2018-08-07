@@ -1,18 +1,14 @@
 import cv2
 import numpy as np
 
-import  FindCorner as fc
+import FindCorner as fc
 
 
-
-
-
-
-
-def komsuluk(y,x,end,green,img):  # unutma i == y ekseni  j == x ekseni
+def komsuluk(y,x,backPath,green,img):  # unutma i == y ekseni  j == x ekseni
     i, j = y,x
     state = True
     dugum = []
+
 
 
     dizi= [[0,0],[0,0]]  # burada hata olabilir...  burada en son 3 eleman eklemede sıkıntı çıkarıyor ondan böyle 2 tane 0-0 dizisi atadın  ----> Hacı burada boş küme ile başlattım. return evresinden önce o elemanı silmelisin
@@ -62,12 +58,7 @@ def komsuluk(y,x,end,green,img):  # unutma i == y ekseni  j == x ekseni
 
 
 
-
-
-
-
         if (len(yon) > 1):# dugum içini başka bir değişkene ata sebebi bu şekilde dugum her zaman 0 büyük oluyor. !!!!DİKKAT ETMELİSİN!!!!!!!!!
-
 
             dizi.append([i, j])
 
@@ -78,25 +69,16 @@ def komsuluk(y,x,end,green,img):  # unutma i == y ekseni  j == x ekseni
 
 
 
-
-
-
-
             break  # ana döngüye ait break
 
 
 
-
-
-
-        elif (len(yon) <= 0 and [i,j] not  in  end ):
+        elif (len(yon) <= 0 and [i,j]):
 
             dizi.append([i, j])
-            rangeDetection(i,j,green)
+            dugum = [[-1, -1, dizi]]
+
             break
-
-
-
 
 
 
@@ -109,20 +91,10 @@ def komsuluk(y,x,end,green,img):  # unutma i == y ekseni  j == x ekseni
 
             i,j = interim[0][0],interim[0][1] # sebebi dizi içinde dizi döndermesidir.
 
-            backPath.append([dizi[-1],dizi[-2],dizi[-3]])# 3 tane eklemene gerek kalmayabilir
-
-            backPath[-1] = backPath[-1] + backPath[0]  # burada geri dönüşü engellemek için ilk başta gönderdiğin düğüm bilgilerinide ekleyerek ilerliyoruz sisteme yük bindiriyor( fazla veri gerekirse silinecek) ileleyen süreçte elden geçir kodu
-
-    #dizi.pop(0)
-    #dizi.pop(0)   bunları diğer durumlar içinde yazabilirsin düğümler yoksa diye
 
 
     geriDonus = backPath[-1]
-    return dizi,dugum , dogruYol, geriDonus
-
-
-
-
+    return dugum
 
 
 
@@ -184,7 +156,7 @@ def rangeDetection(y,x,green):
     p1,p2,p3,p4 = fc.koordinatTespit(20,40)         #buradaki amaç baslangıç noktasına en yakın olan cornerPointleri tespit ederek o noktaya göre thining son bitini kıyaslayarak thining yönünü belirleme
     liste = []
     cornerPoint = [p1,p2,p3,p4]
-    cerceveNoktasi = green[0] / 2
+    cerceveNoktasi = green[0] / 2 # green çerçevesinin en orta noktası baz alınarak işlem yapılmaya çalışılmıştır
     count = 0
     state = 0
 
@@ -241,21 +213,70 @@ def rangeDetection(y,x,green):
 
 
 def findThinPath():
-    img = cv2.imread('son.png', 1)
+
+    backPath = [[0,0]]
+    araBackPath = []
+    araDugum = []
+    state2 = False
+    img = cv2.imread('son.png', 0)
+    img3 = cv2.imread('son.png', 1)
 
     thn = cv2.ximgproc.thinning(img, None, cv2.ximgproc.THINNING_ZHANGSUEN)
 
-    green,red = detectPoint(img)
+    green,red = detectPoint(img3)
 
-    for i in range(green[1][0],green[0][0]):
+    for i in range(green[1][1],green[0][1]):
 
-        for j in range(green[1][1],green[0][1]):
+        for j in range(green[1][0],green[0][0]):
+
+
+
 
             if(thn[i][j] == 255):
 
-                # burada bulduğun thn noktasını findkornerden gelen değer ile karşılaştır konumuna göre yön ataması yap ve ona göre 2 tane nokta koordinatı dön ( başlangıç ve backPoint olmak üzere)
-                komsuluk(i,j,green,thn)
+                dugumler = [[i,j]]
+                for k in range(2):
 
+                    for l in dugumler:
+
+
+
+                        ara = komsuluk(l[0],l[1],backPath,green,thn)
+                        araDugum.append(ara)
+
+                    dugumler = araDugum[:]
+                    backPath = araDugum[:]
+                    araDugum = []
+
+
+
+                for a in dugumler:
+
+                    state = rangeDetection(a[0],a[1],green)
+
+
+
+                    if(state):
+
+                        startPoint = a[-1][1]
+                        backPoint = a[-1][0]
+                        state2 = True
+                        break
+
+
+
+
+            if(state2):
+
+                break
+
+        if(state2):
+
+            break
+
+
+
+    return backPoint,startPoint
 
 
 def detectPoint(img):
@@ -303,10 +324,9 @@ def detectPoint(img):
 
 
 
-img = cv2.imread("son.png")
-detectPoint(img)
-
-cv2.imshow("omer",img)
+img1 = cv2.imread("son.png")
+findThinPath()
+cv2.imshow("omer",img1)
 cv2.waitKey(0)
 
 
