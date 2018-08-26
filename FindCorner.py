@@ -2,8 +2,6 @@ import numpy as np
 import cv2
 
 
-
-
 def findBeam(startPoint,direction,imgEdge):  # [y,x] şeklinde olmalı
 
     y,x = imgEdge.shape
@@ -16,8 +14,6 @@ def findBeam(startPoint,direction,imgEdge):  # [y,x] şeklinde olmalı
     while state:
 
         kopru = imgEdge[i][j]
-
-
 
 
 
@@ -75,15 +71,7 @@ def findBeam(startPoint,direction,imgEdge):  # [y,x] şeklinde olmalı
 
 
 
-
-
-
     return [i,j]
-
-
-
-
-
 
 
 
@@ -101,9 +89,6 @@ def koordinatTespit(loopNum1,loopNum2):
     dizi2 = []
     dizi3 = []
     dizi4 = []
-
-
-
 
 
 
@@ -162,10 +147,6 @@ def koordinatTespit(loopNum1,loopNum2):
 
 
 
-
-
-
-
 def diziOlustur(startPoint,loopNum,pikselFark,direction,edgeImg):
 
 
@@ -188,10 +169,6 @@ def diziOlustur(startPoint,loopNum,pikselFark,direction,edgeImg):
 
 
             y = y + pikselFark
-
-
-
-
 
 
 
@@ -246,12 +223,6 @@ def tekrarSayisiBulma(korNoktalari,mod):  # en çok tekrar eden kordinatı bulup
 
 
 
-
-
-
-
-
-
     dizi.sort()
 
     tekrarSa = dizi[-1][0]
@@ -281,11 +252,6 @@ def ortalamaKoordinatNoktasi(korNoktalari,mod): # belirli sayıda tekrar etmeyen
     ort1 = top / len(korNoktalari)
 
     return dizi.append([ort1, ort2])
-
-
-
-
-
 
 
 

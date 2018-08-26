@@ -6,11 +6,11 @@ import math
 import FindCorner as fc
 
 
-def komsuluk(y,x,backPath,green,img):  # unutma i == y ekseni  j == x ekseni
+def komsuluk(y,x,geriYol,green,img):  # unutma i == y ekseni  j == x ekseni
     i, j = y,x
     state = True
     dugum = []
-
+    backPath = geriYol[:]
 
 
     dizi= []  # burada hata olabilir...  burada en son 3 eleman eklemede sıkıntı çıkarıyor ondan böyle 2 tane 0-0 dizisi atadın  ----> Hacı burada boş küme ile başlattım. return evresinden önce o elemanı silmelisin
@@ -95,7 +95,7 @@ def komsuluk(y,x,backPath,green,img):  # unutma i == y ekseni  j == x ekseni
             interim = dugumNoktalari(i, j, yon)  #x,ydi değiştirdim i,j ile hata yapmış olabilirim...
 
             i,j = interim[0][0],interim[0][1] # sebebi dizi içinde dizi döndermesidir.
-            backPath.append([i,j])
+            backPath[-1].append([i,j])
 
 
     geriDonus = dizi[-1]
@@ -220,8 +220,8 @@ def rangeDetection(y,x,green):
 
 def findThinPath():
 
-    backPath = []
-    araBackPath = []
+
+    safDugum = []
     araDugum = []
     state2 = False
     img = cv2.imread('son.png', 0)
@@ -231,9 +231,9 @@ def findThinPath():
 
     green,red = detectPoint(img3)
 
-    for i in range(green[1][1],green[0][1]):
+    for i in range(green[1][0],green[0][0]):
 
-        for j in range(green[1][0],green[0][0]):
+        for j in range(green[1][1],green[0][1]):
 
 
 
@@ -241,26 +241,31 @@ def findThinPath():
             if(thn[i][j] == 255):
 
                 dugumler = [[i,j]]
-                backPath = [[[i,j]]]
+                backPath = [[i,j]]
+                araBackPath = [[i, j]]
                 for k in range(2):
 
                     for l in dugumler:
 
 
 
-                        ara,back = komsuluk(l[0],l[1],[backPath],green,thn)
+                        ara,back = komsuluk(l[0],l[1],[araBackPath],green,thn)
                         araDugum.extend(ara)
 
 
                     for a in araDugum:
 
                         backPath.append([a[0],a[1]])
+                        safDugum.append([a[0],a[1]])
 
 
-                    backPath.extend(back)
+                    backPath.append(back)
+
+                    araBackPath = backPath[:]
 
 
-                    dugumler = araDugum[:]
+                    dugumler = safDugum[:]
+                    safDugum = []
 
 
                     araDugum = []
@@ -314,8 +319,8 @@ def detectPoint(img):
                 red.append([i, j])
 
     for i in red:
-        xR.append(i[0])
-        yR.append(i[1])
+        xR.append(i[1])
+        yR.append(i[0])
 
     xR.sort()
     yR.sort()
@@ -324,8 +329,8 @@ def detectPoint(img):
     yL, xL = yR[0], xR[0]
 
     for i in green:
-        xG.append(i[0])
-        yG.append(i[1])
+        xG.append(i[1])
+        yG.append(i[0])
 
     xG.sort()
     yG.sort()

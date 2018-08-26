@@ -10,4 +10,13 @@ Başlangıç noktasının labirentin içinde mi yoksa labirenetin dışında mı
 
 Labirent yamuk olursa ortalama hesabı yapınca dugum noktaları bulunan korner noktalarının içinde olmasada içinde gözükme ihtimali var ----------> -
 
-backPath eklemede sıkıntı var gittiği yolun backPath e eklemelisin. Tamamını gözden geçir backPath muhabbetinin
+backPath eklemede sıkıntı var gittiği yolun backPath e eklemelisin. Tamamını gözden geçir backPath muhabbetinin------->+
+
+------------------------------------------------------------------------ 25 Agustos 2018
+
+hacı dugumFiltre() metotları eklemedin daha ileri gitmesine yani ileri bir koordinat olamsına gerek var mı bilmiyorum ilerleyen test sürecinden sonra ihtiyaca
+göre eklemelibirsin --------------> -
+
+
+
+sen ilerleyişi düz labirent için düşünmüşsün ya paralel kenar veya bir dörtgen şeklinde gelirse oluşacak sıkıntıları düşün

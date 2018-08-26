@@ -43,4 +43,8 @@ tekrar sayısını bul eğer 1 den fazla tekrar yoksa ortalama hesabına git. or
 yamuk ---> paralel kenar durumları için tekrar kodu gözden geçir ---> ortalama veya başka bir durum düşün
 
 
---------------------------------------------------------------------------
+-------------------------------------------------------------------------- 25 Agustos  2018
+
+komşuluk bakarak edge detection üzerinden ilerleyebilirsin -----> tek bir ok atar ordan edges yakalandın mı devam edersin döünüş noktalrını yakalayabilirsen o noktalr
+senin korner noktaların.
+edges bozuk çıkarsa sıkıntılı olabilir.
