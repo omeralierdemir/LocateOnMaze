@@ -3,6 +3,81 @@ import  numpy
 import math
 
 
+
+
+
+def findBeam(startPoint,direction,imgEdge):  # [y,x] şeklinde olmalı
+
+    y,x = imgEdge.shape
+    i,j = startPoint    # ------> i==y j==x
+    yon = []
+    state = True
+
+
+
+    while state:
+
+        kopru = imgEdge[i][j]
+
+
+
+        if( kopru == 255):
+
+            state = False
+        else:
+
+            if(direction == 0):  #  ------> 0 == 0
+
+                if ( x - 1 ==  j):
+                    i, j = 0, 0
+
+                    break
+
+                i, j = i, j + 1
+
+            elif(direction == 1): # -----> 1 == 2
+
+
+
+                if ( y - 1 ==  i):
+
+
+                    i, j = 0, 0
+
+                    break
+
+                i,j = i + 1, j
+
+
+            elif(direction == 2):  # ------> 2 == 4
+
+                if ( j == 0):
+
+                    i, j = 0, 0
+
+                    break
+
+
+                i,j = i , j - 1
+
+
+            elif(direction == 3):  # ------> 3 == 6
+
+                if (i == 0):
+
+                    i, j = 0, 0
+
+                    break
+
+
+
+                i,j = i - 1 , j
+
+
+
+    return [i,j]
+
+
 def komsuluk(koordinat,geriYol,limit,img):  # unutma i == y ekseni  j == x ekseni
     i, j = koordinat
 
@@ -265,6 +340,8 @@ def calculationAngle(startP,endP):
 
 def findRightAngle(dortKose):
 
+
+    corners = []
     oldAngle = 0
     state = True
     for i in dortKose:
@@ -274,7 +351,7 @@ def findRightAngle(dortKose):
 
             while(state):
 
-                path,backPath =komsuluk()
+                path,backPath =komsuluk(j,2,15,img)
                 angle = calculationAngle(path[0],path[-1])
 
                 if(angle-5 <= oldAngle or angle + 5 >= oldAngle):
@@ -284,10 +361,144 @@ def findRightAngle(dortKose):
                 else:
 
                     state = False
+                    corners.append(path[0],path[-1])
                     #path bilgisini tut
 
 
             state = True
+
+
+
+def isaret(list):
+
+    bit = []
+
+    for i in list:
+
+        if(i<0):
+
+            bit.extend(0)
+        else:
+            bit.extend(1)
+
+    return bit
+
+
+def rightDetection(limit,edgeImg):
+
+
+    maxY,maxX =  edgeImg.shape
+    aralıkY = math.floor(maxX/limit)
+    aralıkX = math.floor(maxX/limit)
+    points = []
+    kosePoints = []
+    y,x = aralıkY,aralıkX
+    turev = []
+    turevler = []
+    kopru = []
+    index = 0
+
+
+
+    for i in range(4):
+        direction = i
+        for j in range(limit):
+
+            point = findBeam([y,x],direction,edgeImg)
+            points.append(point)
+
+
+
+            if (direction == 0):
+
+                y = y + aralıkY
+
+
+            elif(direction == 1):
+
+                x = x + aralıkX
+
+            elif(direction == 2):
+
+                y = y - aralıkY
+
+            else:
+
+                x = x - aralıkX
+
+
+
+        kosePoints.append(points)
+        points = []
+        if(direction == 0):
+
+            y,x = maxY, aralıkX
+            
+
+        elif(direction == 1):
+
+
+            y, x = maxY, aralıkX
+
+        elif(direction == 2):
+
+            y, x = aralıkY, aralıkX
+
+
+    for i in range(len(kosePoints)):
+        for j in range(len(kosePoints[0])-1):
+
+            if(len(turev)== 0):
+
+                y1 = kosePoints[i][j][0] - kosePoints[i][j + 1][0]
+                x1 = kosePoints[i][j][1] - kosePoints[i][j + 1][1]
+
+                turev.append(y1, x1)
+            else:
+
+                if(kosePoints[i][j] == [0,0]):
+
+                    continue
+
+                else:
+
+                    y1 = kosePoints[i][j][0] - kosePoints[i][j+1][0]
+                    x1 = kosePoints[i][j][1] - kosePoints[i][j + 1][1]
+
+                    turev.append(y1,x1)
+            turevler.append(turev)
+
+
+    for i in range(len(turevler)):
+        for j in range(turevler[i]):
+
+            isaretBit1 = isaret(turevler[i][j])
+            isaretBit2 = isaret(turevler[i][j])
+
+            if(isaretBit1 != isaretBit2):
+
+                index = j
+                break
+
+
+            if(index == 0):
+
+                index = isaretBit2
+
+        index = 0
+        kopru.append(index)
+
+
+
+    for i in range(len(kopru)):
+
+        kopru[i] = turevler[i][math.floor(kopru[i]/2)]
+
+    return kopru
+
+def dugumDetection():
+
+    print()
 
 
 def cornerDetection():
@@ -308,4 +519,7 @@ img = cv2.imread("rt2.png",0)
 edges = edgeDetection(img)
 #komsuluk([94,38],[[[93,38]]],15,edges)
 #komsuluk([73,47],[[[74,47]]],15,edges)
-komsuluk([66,51],[[[67,50],[67,51]]],15,edges)
+#komsuluk([66,51],[[[67,50],[67,51]]],15,edges)
+
+
+rightDetection(10,edges)
