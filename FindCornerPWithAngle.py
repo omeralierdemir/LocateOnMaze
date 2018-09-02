@@ -39,14 +39,14 @@ def findBeam(startPoint,direction,imgEdge):  # [y,x] şeklinde olmalı
 
 
 
-                if ( y - 1 ==  i):
+                if ( i ==  0):
 
 
                     i, j = 0, 0
 
                     break
 
-                i,j = i + 1, j
+                i,j = i - 1, j
 
 
             elif(direction == 2):  # ------> 2 == 4
@@ -63,7 +63,7 @@ def findBeam(startPoint,direction,imgEdge):  # [y,x] şeklinde olmalı
 
             elif(direction == 3):  # ------> 3 == 6
 
-                if (i == 0):
+                if (y - 1 == i):
 
                     i, j = 0, 0
 
@@ -71,7 +71,7 @@ def findBeam(startPoint,direction,imgEdge):  # [y,x] şeklinde olmalı
 
 
 
-                i,j = i - 1 , j
+                i,j = i + 1 , j
 
 
 
@@ -92,36 +92,36 @@ def komsuluk(koordinat,geriYol,limit,img):  # unutma i == y ekseni  j == x eksen
     for k in range(limit):
         yon = []
 
-        if (img[i][j + 1] == 255 and [i,j+1] not in backPath[-1]): # burda bug var i,j dizinin ilk elamanını 0-0 yapıyorum ama etraflıca düşün
+        if (img[i][j + 1] == 255 and [i,j+1] not in backPath): # burda bug var i,j dizinin ilk elamanını 0-0 yapıyorum ama etraflıca düşün
             yon.append(0)
             kopru = 0
 
-        if (img[i + 1][j + 1] == 255 and [i+1,j+1] not in backPath[-1]):
+        if (img[i + 1][j + 1] == 255 and [i+1,j+1] not in backPath):
             yon.append(1)
             kopru = 1
 
-        if (img[i + 1][j] == 255 and [i+1,j] not in backPath[-1]):
+        if (img[i + 1][j] == 255 and [i+1,j] not in backPath):
             yon.append(2)
             kopru = 2
 
 
-        if (img[i + 1][j - 1] == 255 and [i+1,j-1] not in backPath[-1]):
+        if (img[i + 1][j - 1] == 255 and [i+1,j-1] not in backPath):
             yon.append(3)
             kopru = 3
 
-        if (img[i][j - 1] == 255 and [i,j-1] not in backPath[-1]):
+        if (img[i][j - 1] == 255 and [i,j-1] not in backPath):
             yon.append(4)
             kopru = 4
 
-        if (img[i - 1][j - 1] == 255 and [i-1,j-1] not in backPath[-1]):
+        if (img[i - 1][j - 1] == 255 and [i-1,j-1] not in backPath):
             yon.append(5)
             kopru = 5
 
-        if (img[i - 1][j] == 255 and [i-1,j] not in backPath[-1]):
+        if (img[i - 1][j] == 255 and [i-1,j] not in backPath):
             yon.append(6)  #duvgum değikeninin adını yon olarak değiştir.
             kopru = 6
 
-        if (img[i - 1][j + 1] == 255 and [i-1,j+1] not in backPath[-1]):  # buralara dikkat et ve 255 değerine de
+        if (img[i - 1][j + 1] == 255 and [i-1,j+1] not in backPath):  # buralara dikkat et ve 255 değerine de
 
             yon.append(7)
             kopru = 7
@@ -139,15 +139,18 @@ def komsuluk(koordinat,geriYol,limit,img):  # unutma i == y ekseni  j == x eksen
 
             if (len(filtreDugum) > 1):
 
+
                   # yapılacakları düşün dugum noktası çıkarsa
 
+                filtreDugum2 = dugumFiltre2(i,j,filtreDugum)
+                dugum = filtreDugum2[:]
                 break
 
             else:
-                backPath[-1].append([i, j])
+                backPath.append([i, j])
 
                 i,j = filtreDugum[0]
-                backPath[-1].append([i, j])
+                backPath.append([i, j])
 
 
 
@@ -173,13 +176,59 @@ def komsuluk(koordinat,geriYol,limit,img):  # unutma i == y ekseni  j == x eksen
             interim = dugumNoktalari(i, j, yon)  #x,ydi değiştirdim i,j ile hata yapmış olabilirim...
 
             i,j = interim[0][0],interim[0][1] # sebebi dizi içinde dizi döndermesidir.
-            backPath[-1].append([i,j])
+            backPath.append([i,j])
 
 
-    geriDonus = dizi[-1]
-    return dugum, geriDonus
+    geriDonus = dizi[0]
+    return dugum,dizi,geriDonus
 
 
+
+def noDuplicateValue(list):
+
+
+
+    s = []
+    for i in list:
+        if i not in s:
+            s.append(i)
+
+    return s
+
+def dugumFiltre2(y,x,dugum):
+
+    dizi = komsulukSaptama([y,x],dugum)
+
+    gurultu = []
+    for i in dizi:
+
+        for j in dizi:
+
+
+            y = abs(i[0] - j[0])
+            x = abs(i[1] - j[1])
+
+            if([y,x] == [1,0] and i[2] in [1,3,5,7]):
+
+                gurultu.append([i[0],i[1]])
+
+            elif([y,x] == [0,1] and i[2] in [1,3,5,7]):
+
+                gurultu.append([i[0],i[1]])
+
+
+    gurultu = noDuplicateValue(gurultu)
+    for i in range(len(dizi)):
+
+        dizi[i].pop(2)
+
+    for i in gurultu:
+
+        dizi.remove(i)
+
+
+
+    return dizi
 
 
 def dugumNoktalari(x1,y1,dugum):
@@ -307,6 +356,61 @@ def dugumFiltre(i1,j1,dugum):
     return dizi
 
 
+def komsulukSaptama(koordinat,dugum):
+
+    i,j = koordinat
+    yon = []
+
+    for k in range(len(dugum)):
+
+        araDeger = [dugum[k][0],dugum[k][1]]
+
+
+        if ([i,j + 1] == araDeger):  # burda bug var i,j dizinin ilk elamanını 0-0 yapıyorum ama etraflıca düşün
+            yon.append(0)
+
+            dugum[k].append(0)
+            kopru = 0
+
+        elif ([i + 1,j + 1] == araDeger):
+            yon.append(1)
+            dugum[k].append(1)
+            kopru = 1
+
+        elif ([i + 1,j] == araDeger):
+            yon.append(2)
+            dugum[k].append(2)
+            kopru = 2
+
+        elif ([i + 1,j - 1] == araDeger):
+            yon.append(3)
+            dugum[k].append(3)
+            kopru = 3
+
+        elif ([i,j - 1] == araDeger):
+            yon.append(4)
+            dugum[k].append(4)
+            kopru = 4
+
+        elif ([i - 1,j - 1] == araDeger):
+            yon.append(5)
+            dugum[k].append(5)
+            kopru = 5
+
+        elif ([i - 1,j] == araDeger):
+            yon.append(6)
+
+            dugum[k].append(6)# duvgum değikeninin adını yon olarak değiştir.
+            kopru = 6
+
+        elif ([i - 1,j + 1] == araDeger):  # buralara dikkat et ve 255 değerine de
+
+            yon.append(7)
+            dugum[k].append(7)
+            kopru = 7
+
+    return dugum
+
 
 
 
@@ -330,44 +434,44 @@ def calculationAngle(startP,endP):
 
     hipotenus = math.sqrt(x**2 + y**2)
 
-    sinX = x / hipotenus
+    sinX = abs( x / hipotenus)
 
-    teta = math.atan(sinX)
-
+    teta =  math.asin(sinX)
+    teta = teta * 180/math.pi
 
     return teta
 
 
-def findRightAngle(dortKose):
+def findRightAngle(kose,backPath,edge):
 
 
     corners = []
     oldAngle = 0
     state = True
-    for i in dortKose:
-
-        for j in i:
 
 
-            while(state):
-
-                path,backPath =komsuluk(j,2,15,img)
-                angle = calculationAngle(path[0],path[-1])
-
-                if(angle-5 <= oldAngle or angle + 5 >= oldAngle):
-
-                    oldAngle = angle
-
-                else:
-
-                    state = False
-                    corners.append(path[0],path[-1])
-                    #path bilgisini tut
 
 
-            state = True
+
+    while(state):
+
+        dugum,path,backPath =komsuluk(kose,backPath,15,edge)
+        angle = calculationAngle(path[0],path[-1])
+
+        if(angle-5 <= oldAngle or angle + 5 >= oldAngle):
+
+            oldAngle = angle
+
+        else:
+
+            state = False
+            corners.append(path[0],path[-1])
+            #path bilgisini tut
 
 
+    state = True
+
+# hacı kaç brim ilerdiğini dönder ve ekle
 
 def isaret(list):
 
@@ -377,9 +481,9 @@ def isaret(list):
 
         if(i<0):
 
-            bit.extend(0)
+            bit.append(0)
         else:
-            bit.extend(1)
+            bit.append(1)
 
     return bit
 
@@ -397,11 +501,29 @@ def rightDetection(limit,edgeImg):
     turevler = []
     kopru = []
     index = 0
-
+    flag = 0
 
 
     for i in range(4):
         direction = i
+
+        if(direction == 0):
+
+            y,x = aralıkY, 0
+
+        elif (direction == 1):
+
+            y, x = maxY - 1 , aralıkX
+
+
+        elif (direction == 2):
+
+            y, x = maxY - aralıkY, maxX - 1
+
+        elif (direction == 3):
+
+            y, x = 0, maxX - aralıkX
+
         for j in range(limit):
 
             point = findBeam([y,x],direction,edgeImg)
@@ -430,19 +552,6 @@ def rightDetection(limit,edgeImg):
 
         kosePoints.append(points)
         points = []
-        if(direction == 0):
-
-            y,x = maxY, aralıkX
-            
-
-        elif(direction == 1):
-
-
-            y, x = maxY, aralıkX
-
-        elif(direction == 2):
-
-            y, x = aralıkY, aralıkX
 
 
     for i in range(len(kosePoints)):
@@ -453,10 +562,10 @@ def rightDetection(limit,edgeImg):
                 y1 = kosePoints[i][j][0] - kosePoints[i][j + 1][0]
                 x1 = kosePoints[i][j][1] - kosePoints[i][j + 1][1]
 
-                turev.append(y1, x1)
+                turev.append([y1,x1])
             else:
 
-                if(kosePoints[i][j] == [0,0]):
+                if(kosePoints[i][j] == [0,0] or kosePoints[i][j + 1] == [0,0] ):
 
                     continue
 
@@ -465,43 +574,70 @@ def rightDetection(limit,edgeImg):
                     y1 = kosePoints[i][j][0] - kosePoints[i][j+1][0]
                     x1 = kosePoints[i][j][1] - kosePoints[i][j + 1][1]
 
-                    turev.append(y1,x1)
-            turevler.append(turev)
-
+                    turev.append([y1,x1])
+        turevler.append(turev)
+        turev = []
 
     for i in range(len(turevler)):
-        for j in range(turevler[i]):
+        for j in range(len(turevler[i])):
 
             isaretBit1 = isaret(turevler[i][j])
-            isaretBit2 = isaret(turevler[i][j])
+            isaretBit2 = isaret(turevler[i][j+1])
 
             if(isaretBit1 != isaretBit2):
 
                 index = j
+                flag = 1
                 break
 
-
-            if(index == 0):
-
-                index = isaretBit2
-
-        index = 0
+        if (flag == 0):
+            index = isaretBit2
         kopru.append(index)
-
+        index = 0
 
 
     for i in range(len(kopru)):
 
-        kopru[i] = turevler[i][math.floor(kopru[i]/2)]
+
+        kopru[i] = kosePoints[i][math.floor(kopru[i] / 2) + 1]
 
     return kopru
 
-def dugumDetection():
-
-    print()
+def dugumDetection(edgeImg):
 
 
-def cornerDetection():
+
+    geriDugum = []
+    result = []
+    result2 = []
+    kopru = rightDetection(10,edgeImg)
+    for i in kopru:
+
+        dugum,path, backPath = komsuluk(i,[[0,0]],1,edgeImg)
+
+        geriDugum.extend(dugum)
+        geriDugum.append(backPath)
+
+        result.append(dugum)
+        result2.append(geriDugum)
+        geriDugum = []
+
+
+    return result,result2
+
+def cornerDetection(edgeImg):
+
+
+    cornerPoint = []
+    dugums,backPaths = dugumDetection(edgeImg)
+
+    for i in range(len(dugums)):
+
+        for j in range(len(dugums[i])):
+
+            ara = findRightAngle(dugums[i][j],backPaths[i],edgeImg)
+
+            cornerPoint.append(ara)
 
 
     # labirentSaptama()
@@ -517,9 +653,13 @@ def cornerDetection():
     print()
 img = cv2.imread("rt2.png",0)
 edges = edgeDetection(img)
-#komsuluk([94,38],[[[93,38]]],15,edges)
+#a = komsuluk([94,38],[[0,0]],1,edges)
+
+#dugumDetection(edges)
+cornerDetection(edges)
+print()
 #komsuluk([73,47],[[[74,47]]],15,edges)
 #komsuluk([66,51],[[[67,50],[67,51]]],15,edges)
 
 
-rightDetection(10,edges)
+#rightDetection(10,edges)
