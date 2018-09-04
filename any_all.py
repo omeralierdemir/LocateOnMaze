@@ -434,7 +434,7 @@ def calculationAngle(startP,endP):
 
     hipotenus = math.sqrt(x**2 + y**2)
 
-    sinX = x / hipotenus
+    sinX = abs( x / hipotenus)
 
     teta =  math.asin(sinX)
     teta = teta * 180/math.pi
@@ -445,53 +445,42 @@ def calculationAngle(startP,endP):
 def findRightAngle(kose,backPath,edge):
 
 
-    flag = 0
     corners = []
     ara = kose[:]
     oldAngle = 0
     state = True
     geriDonus = backPath[:]
-    dizi = []
-    while (state):
-
-        dugum, path, geriDonus = komsuluk(ara, geriDonus, 15, edge)
-        geriDonus = [path[-3], path[-2], path[-1]]
-        angle = int(calculationAngle(path[0],path[-1]))
 
 
 
+    ilkGir=True
+    while(state):
 
-        for i in range(21):
+        dugum,path,geriDonus =komsuluk(ara,geriDonus,15,edge)
+        geriDonus = [path[-3],path[-2],path[-1]]
+        angle = int( calculationAngle(path[0],path[-1]))
+        oldAngle = [oldAngle-1,oldAngle -2,oldAngle-3,oldAngle -4,oldAngle-5,oldAngle,oldAngle+1,oldAngle +2,oldAngle+3,oldAngle +4,oldAngle+5]
+        dizi = []
+        for i in range(len(20)):
 
+            dizi.append(oldAngle - 10 + i)
 
+        if angle in oldAngle or ilkGir ==True:
 
-            dizi.append(oldAngle -10 + i)
-
-
-        if(flag == 0):
             oldAngle = angle
-
-            flag = 1
+            ilkGir = False
 
         else:
 
-            if (angle in dizi):
-
-                oldAngle = angle
-
-            else:
-
-                state = False
-                corners.append([path[0], path[-1]])
-                # path bilgisini tut
-
-        dizi = []
-
-
-
-
+            state = False
+            corners.append(path[0],path[-1])
+            #path bilgisini tut
         ara = path[-1]
-    return path[math.floor(len(path)/2)]
+
+    state = True
+
+# hacı kaç brim ilerdiğini dönder ve ekle
+
 def isaret(list):
 
     bit = []
@@ -646,7 +635,7 @@ def dugumDetection(edgeImg):
 
 def cornerDetection(edgeImg):
 
-    result = []
+
     cornerPoint = []
     dugums,backPaths = dugumDetection(edgeImg)
 
@@ -657,7 +646,7 @@ def cornerDetection(edgeImg):
             ara = findRightAngle(dugums[i][j],backPaths[i],edgeImg)
 
             cornerPoint.append(ara)
-            print()
+
 
     # labirentSaptama()
     #dugumSaptama()------> her köşe için 2 tane dügüm noktası toplamda 8 tane dügüm noktası döndürecek back pathle beraber
