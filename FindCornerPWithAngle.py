@@ -417,7 +417,7 @@ def komsulukSaptama(koordinat,dugum):
 def edgeDetection(img):
 
 
-    edges = cv2.Canny(img, 50, 150)
+    edges = cv2.Canny(img, 200, 600)
 
 
 
@@ -511,7 +511,8 @@ def rightDetection(limit,edgeImg):
 
 
     maxY,maxX =  edgeImg.shape
-    aralıkY = math.floor(maxX/limit)
+    maxY,maxX = maxY - 1, maxX - 1  # hocam buradaki amacımız img.shape de kaç adet piksel olduğunu döner y ve x eksenleri için bunların 1 eksiğinden başlattın çünkü tam sayı geldiğinde büyük ihtimalle index aşımı hatası verecekti.
+    aralıkY = math.floor(maxY/limit)
     aralıkX = math.floor(maxX/limit)
     points = []
     kosePoints = []
@@ -521,6 +522,8 @@ def rightDetection(limit,edgeImg):
     kopru = []
     index = 0
     flag = 0
+    mutlakTurev = []
+    mutlakTurevler = []
 
 
     for i in range(4):
@@ -581,7 +584,11 @@ def rightDetection(limit,edgeImg):
                 y1 = kosePoints[i][j][0] - kosePoints[i][j + 1][0]
                 x1 = kosePoints[i][j][1] - kosePoints[i][j + 1][1]
 
+                y1M = abs(kosePoints[i][j][0]) - abs(kosePoints[i][j + 1][0])
+                x1M = abs(kosePoints[i][j][1]) - abs(kosePoints[i][j + 1][1])
+
                 turev.append([y1,x1])
+                mutlakTurev.append([y1M,x1M])
             else:
 
                 if(kosePoints[i][j] == [0,0] or kosePoints[i][j + 1] == [0,0] ):
@@ -593,21 +600,33 @@ def rightDetection(limit,edgeImg):
                     y1 = kosePoints[i][j][0] - kosePoints[i][j+1][0]
                     x1 = kosePoints[i][j][1] - kosePoints[i][j + 1][1]
 
+                    y1M = abs(kosePoints[i][j][0]) - abs(kosePoints[i][j + 1][0])
+                    x1M = abs(kosePoints[i][j][1]) - abs(kosePoints[i][j + 1][1])
+
                     turev.append([y1,x1])
+                    mutlakTurev.append([y1M, x1M])
         turevler.append(turev)
         turev = []
-
+        mutlakTurevler.append(mutlakTurev)
+        mutlakTurev = []
     for i in range(len(turevler)):
-        for j in range(len(turevler[i])):
+        for j in range(len(turevler[i])-1):
 
             isaretBit1 = isaret(turevler[i][j])
             isaretBit2 = isaret(turevler[i][j+1])
 
             if(isaretBit1 != isaretBit2):
 
-                index = j
-                flag = 1
-                break
+
+                if((mutlakTurevler[i][j+1][0]<=120 or mutlakTurevler[i][j+1][1]<=120) or (mutlakTurevler[i][j+1][0]>=-120 or mutlakTurevler[i][j+1][1]>=-120)):
+
+                    index = j  # j + 1 yapılabilir
+                    flag = 1
+                    break
+
+
+
+
 
         if (flag == 0):
             index = isaretBit2
@@ -670,12 +689,15 @@ def cornerDetection(edgeImg):
     #rahat engellemiş olursun.
 
     print()
-img = cv2.imread("rt2.png",0)
+img = cv2.imread("rt1.png",0)
 edges = edgeDetection(img)
 #a = komsuluk([94,38],[[0,0]],1,edges)
 
 #dugumDetection(edges)
 cornerDetection(edges)
+
+#d = findRightAngle([53,149],[[53,149],[53,148]],edges)
+
 print()
 #komsuluk([73,47],[[[74,47]]],15,edges)
 #komsuluk([66,51],[[[67,50],[67,51]]],15,edges)
