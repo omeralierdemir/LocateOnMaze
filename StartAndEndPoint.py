@@ -158,6 +158,8 @@ def dugumNoktalari(x1,y1,dugum):
 
 def rangeDetection(y,x,green):
 
+
+    yPozitif,xPozitif,yNeg,xNeg = 0,0,0,0
     p1,p2,p3,p4 = fc.koordinatTespit(20,40)         #buradaki amaç baslangıç noktasına en yakın olan cornerPointleri tespit ederek o noktaya göre thining son bitini kıyaslayarak thining yönünü belirleme
     liste = []
     cornerPoint = [p1,p2,p3,p4]
@@ -166,49 +168,33 @@ def rangeDetection(y,x,green):
     count = 0
     state = 0
 
+
     for i in cornerPoint:
+        liste = [[i[0] - y, i[1] - x]]
 
-        liste = [[i[0] - cerceveNoktasi[0],i[1] - cerceveNoktasi[1],count ]] + liste
+        if(liste[0] > 0):
 
+            yPozitif = yPozitif + 1
 
-        count += 1
+        elif (liste[0] < 0):
 
+            yNeg =  yNeg + 1
 
-    liste.sort()
-    corner = liste[0][2]
+        if (liste[1] > 0):
 
-    if(corner == 0):
+            xPozitif = xPozitif + 1
 
-        if(p1[0] - y > 0 and p1[1] - x < 0):
+        elif (liste[1] < 0):
 
-            state = 1
-        else:
-            state = 0
-
-    elif(corner == 1):
-
-        if (p2[0] - y > 0 and p2[1] - x > 0):
-
-            state = 1
-        else:
-            state = 0
+            xNeg = xNeg + 1
 
 
-    elif (corner == 2):
+    if((yPozitif == 2 and  yNeg == 2 ) and (xPozitif == 2 and xNeg == 2)):
 
-        if (p3[0] - y < 0 and p3[1] - x > 0):
+        state = True
+    else:
 
-            state = 1
-        else:
-            state = 0
-
-    elif (corner == 3):
-
-        if (p4[0] - y < 0 and p4[1] - x < 0):
-
-            state = 1
-        else:
-            state = 0
+        state = False
 
 
 

@@ -516,7 +516,6 @@ def rightDetection(limit,edgeImg):
     aralıkX = math.floor(maxX/limit)
     points = []
     kosePoints = []
-    y,x = aralıkY,aralıkX
     turev = []
     turevler = []
     kopru = []
@@ -540,7 +539,7 @@ def rightDetection(limit,edgeImg):
 
         elif (direction == 2):
 
-            y, x = maxY - aralıkY, maxX - 1
+            y, x = maxY - aralıkY, maxX - 1  # maxX -1, maxY -1 işlemini zaten yukarıda yapmaktasın. Bir sıkıntı çıkaracağını sanmıyorum ama yinede dikkatli olmalısın
 
         elif (direction == 3):
 
@@ -584,8 +583,8 @@ def rightDetection(limit,edgeImg):
                 y1 = kosePoints[i][j][0] - kosePoints[i][j + 1][0]
                 x1 = kosePoints[i][j][1] - kosePoints[i][j + 1][1]
 
-                y1M = abs(kosePoints[i][j][0]) - abs(kosePoints[i][j + 1][0])
-                x1M = abs(kosePoints[i][j][1]) - abs(kosePoints[i][j + 1][1])
+                y1M = abs(kosePoints[i][j][0] - kosePoints[i][j + 1][0])
+                x1M = abs(kosePoints[i][j][1] - kosePoints[i][j + 1][1])
 
                 turev.append([y1,x1])
                 mutlakTurev.append([y1M,x1M])
@@ -600,8 +599,8 @@ def rightDetection(limit,edgeImg):
                     y1 = kosePoints[i][j][0] - kosePoints[i][j+1][0]
                     x1 = kosePoints[i][j][1] - kosePoints[i][j + 1][1]
 
-                    y1M = abs(kosePoints[i][j][0]) - abs(kosePoints[i][j + 1][0])
-                    x1M = abs(kosePoints[i][j][1]) - abs(kosePoints[i][j + 1][1])
+                    y1M = abs(kosePoints[i][j][0] - kosePoints[i][j + 1][0])
+                    x1M = abs(kosePoints[i][j][1] - kosePoints[i][j + 1][1])
 
                     turev.append([y1,x1])
                     mutlakTurev.append([y1M, x1M])
@@ -618,7 +617,7 @@ def rightDetection(limit,edgeImg):
             if(isaretBit1 != isaretBit2):
 
 
-                if((mutlakTurevler[i][j+1][0]<=120 or mutlakTurevler[i][j+1][1]<=120) or (mutlakTurevler[i][j+1][0]>=-120 or mutlakTurevler[i][j+1][1]>=-120)):
+                if((mutlakTurevler[i][j+1][0]<=120 or mutlakTurevler[i][j+1][1]<=120)):
 
                     index = j  # j + 1 yapılabilir
                     flag = 1
@@ -676,8 +675,8 @@ def cornerDetection(edgeImg):
             ara = findRightAngle(dugums[i][j],backPaths[i],edgeImg)
 
             cornerPoint.append(ara)
-            print()
 
+    return cornerPoint
     # labirentSaptama()
     #dugumSaptama()------> her köşe için 2 tane dügüm noktası toplamda 8 tane dügüm noktası döndürecek back pathle beraber
     #findRightAngle() ------> komsuluk u çağıracak içerisinde farklı açı değeri çıkana kadar.
@@ -688,17 +687,17 @@ def cornerDetection(edgeImg):
     #notlar hacı komşuluğu dügüm noktalarından başlat bulduğun ilk noktadan değil. Bulduğun ilk noktayıda arguman olarak backPath olarak ver. Böylece geri dönüşleri
     #rahat engellemiş olursun.
 
-    print()
-img = cv2.imread("rt1.png",0)
+
+img = cv2.imread("son.png",0)
 edges = edgeDetection(img)
 #a = komsuluk([94,38],[[0,0]],1,edges)
 
 #dugumDetection(edges)
-cornerDetection(edges)
+a = cornerDetection(edges)
 
 #d = findRightAngle([53,149],[[53,149],[53,148]],edges)
 
-print()
+print(a)
 #komsuluk([73,47],[[[74,47]]],15,edges)
 #komsuluk([66,51],[[[67,50],[67,51]]],15,edges)
 

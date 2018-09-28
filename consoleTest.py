@@ -132,17 +132,15 @@ def four_point_transform(image, pts):
 
 
 ap = argparse.ArgumentParser()
-ap.add_argument("-i", "--image", help="rt4.png")
+ap.add_argument("-i", "--image", help="rt1.png")
 ap.add_argument("-c", "--coords",
                 help="comma seperated list of source points")
 args = vars(ap.parse_args())
 
 
 
-image = cv2.imread("rt4.png")
-#pts = np.array(eval("[[189,51],[286,134],[22,245],[123,329]]"), dtype = "float32")
-pts = np.array(eval("[[468, 71], [354, 500], [185, 298], [632, 258]]"), dtype = "float32")
-#pts = np.array(eval("[[51,189],[134,286],[245,22],[329,123]]"), dtype = "float32")
+image = cv2.imread(args["image"])
+pts = np.array(eval(args["coords"]), dtype = "float32")
 #pts = [[186,50],[284,133],[120,327],[22,245]]
 
 warped = four_point_transform(image, pts)
